@@ -1,0 +1,52 @@
+@model Container
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity</title>
+</head>
+<body>
+    
+    <div class="row">
+        <h1 class="col-md-10">Dojo Activity Center</h1>
+        <p class="col-md-1"> <a asp-action="Dashboard" asp-controller="Belt">Home</a> </p>
+        <p class="col-md-1"> <a asp-action="Logout" asp-controller="Home">LogOut</a></p>
+    </div>
+
+    <div>
+        <h1>@Model.Event.Title</h1>
+    </div>
+
+    <div>
+        <h4>Event Coordainator: @Model.Event.Coordainator.FirstName</h4>
+        <h4>Descrption: </h4>
+        <p>@Model.Event.Description</p>
+        <h4>Participants: </h4>
+        @foreach (var participant in Model.Event.Participants)
+        {
+            <li>@participant.Attendee.FirstName <span></span> @participant.Attendee.LastName</li>   
+        }
+    </div>
+
+    <div>
+        @* buttons here, delete for the Coordainator, other users can Join or Leave *@
+        @if( Model.Event.Coordainator.UserId == Model.User.UserId )
+        {
+            <a asp-action="DeleteEvent" asp-controller="Belt" asp-route-eventId="@Model.Event.EventId"><button class="btn btn-sm btn-danger">Delete</button></a>
+        }
+        @* else if user "Join the activity" show the "Leave" button *@
+        else if( Model.Event.Participants.Any(p => p.UserId ==  Model.User.UserId))
+        {
+            <a asp-action="Leave" asp-controller="Belt" asp-route-route-eventId="@Model.Event.EventId"><button class="btn btn-sm btn-warning">Leave</button></a>
+        }
+        @* else show Join button *@
+        else
+        {
+            <a asp-action="Join" asp-controller="Belt" asp-route-route-eventId="@Model.Event.EventId"><button class="btn btn-sm btn-primary">Join</button></a>
+        }
+    </div>
+    
+</body>
+</html>

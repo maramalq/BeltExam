@@ -1,0 +1,73 @@
+@model Event
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Activity</title>
+</head>
+<body>
+
+    <div class="row">
+        <h1 class="col-md-10">Dojo Activity Center</h1>
+        <p class="col-md-1"> <a asp-action="Dashboard" asp-controller="Belt">Home</a> </p>
+        <p class="col-md-1"> <a asp-action="Logout" asp-controller="Home">LogOut</a></p>
+    </div>
+
+    <div class="col-md-8">
+
+        <h2>Create New Activity</h2>
+
+        <form asp-action="CreateEvent" asp-controller="Belt" method="POST">
+
+            <div>
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" placeholder="First Name" />
+                <span asp-validation-for="Title" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                <label asp-for="EventDate"></label>
+                <input asp-for="EventDate" class="form-control" />
+                <span asp-validation-for="EventDate" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                <label asp-for="EventTime"></label>
+                <input asp-for="EventTime" class="form-control"/>
+                <span asp-validation-for="EventTime" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration" class="form-control"/>
+                <span asp-validation-for="Duration" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                @* <label asp-for="DurationUnit"></label> *@
+                <select asp-for="DurationUnit" class="form-control">
+                    <option value="Days">Days</option>
+                    <option value="Hours">Hours</option>
+                    <option value="Mintues">Mintues</option>
+                </select>
+                <span asp-validation-for="DurationUnit" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" style="color: red;"></span> <br />
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form> 
+    </div>
+
+    
+</body>
+</html>

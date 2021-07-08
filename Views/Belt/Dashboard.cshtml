@@ -1,0 +1,70 @@
+@model Container
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Activity Center</title>
+</head>
+<body>
+
+    <div class="row">
+        <h1 class="col-md-8">Dojo Activity Center</h1>
+        <p class="col-md-2"> Welcome, @Model.User.FirstName! </p>
+        <p class="col-md-2"> <a asp-action="Logout" asp-controller="Home">LogOut</a></p>
+    </div>
+
+    <div>
+
+        <table class="table table-striped table-light">
+                <tr>
+                    <th>Activity</th>
+                    <th>Date and Time</th>
+                    <th>Duration</th>
+                    <th>Event Coordainator</th>
+                    <th>No. of Participants</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var eventt in Model.Events)
+                {
+                    <tr>
+                        <td> <a asp-action="EventInfo" asp-controller="Belt" asp-route-eventId="@eventt.EventId"> @eventt.Title </a></td>
+                        <td>@eventt.EventDate.ToString("dd/MM/yyyy @")  @eventt.EventTime.ToString("h:mm tt")</td>
+                        <td>@eventt.Duration @eventt.DurationUnit</td>
+                        <td>@eventt.Coordainator.FirstName</td>
+                        <td>@eventt.Participants.Count</td>
+                        <td>
+                            @* buttons here, delete for the user Posted by, other users can RSVP or Un-RSVP *@
+                            @if( eventt.Coordainator.UserId == Model.User.UserId )
+                            {
+                                <a asp-action="DeleteEvent" asp-controller="Belt" asp-route-eventId="@eventt.EventId"><button class="btn btn-sm btn-danger">Delete</button></a>
+                            }
+                            @* black belt feature *@
+                              
+                            
+                            @* else if user "Join the activity" show the "Leave" button *@
+                            else if( eventt.Participants.Any(p => p.UserId == Model.User.UserId ))
+                            {
+                                <a asp-action="Leave" asp-controller="Belt" asp-route-eventId="@eventt.EventId"><button class="btn btn-sm btn-warning">Leave</button></a>
+                            }
+                            @* else show Join button *@
+                            else
+                            {
+                                <a asp-action="Join" asp-controller="Belt" asp-route-eventId="@eventt.EventId"><button class="btn btn-sm btn-primary">Join</button></a>
+                            }
+                        </td>
+                    </tr>
+                    
+                }
+            </table>
+        </div>
+
+    </div>
+
+    <div class="text-center">
+        <a asp-action="NewEvent" asp-controller="Belt"><button class="btn btn-sm btn-primary">Add New Activity</button></a>
+    </div>
+    
+</body>
+</html>
